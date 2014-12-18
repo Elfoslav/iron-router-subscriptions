@@ -1,0 +1,60 @@
+<head>
+  <title>iron-router-waiton</title>
+</head>
+
+<body>
+</body>
+
+<template name="layout">
+  <a href="{{pathFor 'home'}}">Home</a> |
+  <a href="{{pathFor 'persons'}}">Persons</a> |
+  <a href="{{pathFor 'search'}}">Search</a> |
+
+  <p>
+    <a href="{{pathFor 'home'}}">Home</a> is page with 5 persons, we subscribe to 5 persons.
+    <a href="{{pathFor 'persons'}}">Persons</a> is page with 2000 persons, we subscribe to 2000 persons.
+    <a href="{{pathFor 'search'}}">Search</a> is page with 7 persons, we subscribe to 7 persons.
+    It's just dumb example of search.
+  </p>
+  <p>
+    Go to <a href="{{pathFor 'persons'}}">Persons</a> and then to
+    <a href="{{pathFor 'home'}}">Home </a> or <a href="{{pathFor 'search'}}">Search</a>.
+    When comming from <a href="{{pathFor 'persons'}}">Persons</a> to <a href="{{pathFor 'home'}}">Home </a>,
+    you can see data from Persons for a moment. That's because
+    Persons contains 2000 person documents and we subscribe just to 5 on Home page. There is a little delay
+    while synchronizing data. To fix it, you have to filter collection on the client. If you go from
+    <a href="{{pathFor 'persons'}}">Persons</a> to <a href="{{pathFor 'search'}}">Search</a>, you
+    can see correct list of data. You can also see wrong and correct counter.
+    You can see the code on <a href="#">Github</a>.
+  </p>
+  <hr>
+  {{> yield}}
+</template>
+
+<template name="loading">
+  <p>loading...</p>
+</template>
+
+<template name="home">
+  <h2>Home</h2>
+  {{> personsList}}
+</template>
+
+<template name="persons">
+  <h2>Persons ({{personsCount}})</h2>
+  {{> personsList}}
+</template>
+
+<template name="search">
+  <h2>Search persons ({{personsCount}}) - wrong</h2>
+  <h2>Search persons ({{personsClientFilterCount}}) - correct</h2>
+  {{> personsList persons=persons}}
+</template>
+
+<template name="personsList">
+  {{#each persons}}
+    <p>{{firstName}} {{lastName}}</p>
+  {{else}}
+    <p>No persons.</p>
+  {{/each}}
+</template>
